@@ -10,7 +10,6 @@ bin
 assets
 runtime
 *.class
-*.jar
 *.war
 *.ear
 
