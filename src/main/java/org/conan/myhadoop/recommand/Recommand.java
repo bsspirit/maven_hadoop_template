@@ -40,6 +40,7 @@ public class Recommand {
         conf.addResource("classpath:/hadoop/core-site.xml");
         conf.addResource("classpath:/hadoop/hdfs-site.xml");
         conf.addResource("classpath:/hadoop/mapred-site.xml");
+        conf.set("io.sort.mb", "1024");
         return conf;
     }
 

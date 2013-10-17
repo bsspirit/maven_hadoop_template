@@ -58,7 +58,7 @@ public class Step2 {
     public static void run(Map<String, String> path) throws IOException {
         JobConf conf = Recommand.config();
 
-        String input = path.get("Step2Input");
+        String input = path.get("Step2Input"); 
         String output = path.get("Step2Output");
 
         HdfsDAO hdfs = new HdfsDAO(Recommand.HDFS, conf);
@@ -68,8 +68,8 @@ public class Step2 {
         conf.setOutputValueClass(IntWritable.class);
 
         conf.setMapperClass(Step2_UserVectorToCooccurrenceMapper.class);
-        conf.setCombinerClass(Step2_UserVectorToConoccurrenceReducer.class);
-        conf.setReducerClass(Step2_UserVectorToConoccurrenceReducer.class);
+//        conf.setCombinerClass(Step2_UserVectorToConoccurrenceReducer.class);
+//        conf.setReducerClass(Step2_UserVectorToConoccurrenceReducer.class);
 
         conf.setInputFormat(TextInputFormat.class);
         conf.setOutputFormat(TextOutputFormat.class);

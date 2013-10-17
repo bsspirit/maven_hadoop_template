@@ -60,6 +60,7 @@ public class Step1 {
         String output = path.get("Step1Output");
 
         HdfsDAO hdfs = new HdfsDAO(Recommand.HDFS, conf);
+//        hdfs.rmr(output);
         hdfs.rmr(input);
         hdfs.mkdirs(input);
         hdfs.copyFile(path.get("data"), input);

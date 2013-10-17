@@ -64,7 +64,6 @@ public class Step4 {
                     v.set(co.getItemID2() + "," + pref * co.getNum());
                     output.collect(k, v);
                 }
-
             }
         }
     }

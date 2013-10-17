@@ -12,6 +12,6 @@
   </property>
   <property>
     <name>io.sort.mb</name>
-    <value>256</value>
+    <value>1024</value>
   </property>
 </configuration>
