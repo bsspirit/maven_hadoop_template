@@ -13,6 +13,7 @@ runtime
 *.war
 *.ear
 KPIDomain.java
-
+*.train
+*.validate
 
 
