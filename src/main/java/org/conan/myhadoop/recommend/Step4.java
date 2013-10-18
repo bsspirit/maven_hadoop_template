@@ -1,4 +1,4 @@
-package org.conan.myhadoop.recommand;
+package org.conan.myhadoop.recommend;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class Step4 {
 
         @Override
         public void map(LongWritable key, Text values, OutputCollector<IntWritable, Text> output, Reporter reporter) throws IOException {
-            String[] tokens = Recommand.DELIMITER.split(values.toString());
+            String[] tokens = Recommend.DELIMITER.split(values.toString());
 
             String[] v1 = tokens[0].split(":");
             String[] v2 = tokens[1].split(":");
@@ -93,13 +93,13 @@ public class Step4 {
     }
 
     public static void run(Map<String, String> path) throws IOException {
-        JobConf conf = Recommand.config();
+        JobConf conf = Recommend.config();
 
         String input1 = path.get("Step4Input1");
         String input2 = path.get("Step4Input2");
         String output = path.get("Step4Output");
 
-        HdfsDAO hdfs = new HdfsDAO(Recommand.HDFS, conf);
+        HdfsDAO hdfs = new HdfsDAO(Recommend.HDFS, conf);
         hdfs.rmr(output);
 
         conf.setOutputKeyClass(IntWritable.class);

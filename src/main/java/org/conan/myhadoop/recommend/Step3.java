@@ -1,4 +1,4 @@
-package org.conan.myhadoop.recommand;
+package org.conan.myhadoop.recommend;
 
 import java.io.IOException;
 import java.util.Map;
@@ -28,7 +28,7 @@ public class Step3 {
 
         @Override
         public void map(LongWritable key, Text values, OutputCollector<IntWritable, Text> output, Reporter reporter) throws IOException {
-            String[] tokens = Recommand.DELIMITER.split(values.toString());
+            String[] tokens = Recommend.DELIMITER.split(values.toString());
             for (int i = 1; i < tokens.length; i++) {
                 String[] vector = tokens[i].split(":");
                 int itemID = Integer.parseInt(vector[0]);
@@ -42,12 +42,12 @@ public class Step3 {
     }
 
     public static void run1(Map<String, String> path) throws IOException {
-        JobConf conf = Recommand.config();
+        JobConf conf = Recommend.config();
 
         String input = path.get("Step3Input1");
         String output = path.get("Step3Output1");
 
-        HdfsDAO hdfs = new HdfsDAO(Recommand.HDFS, conf);
+        HdfsDAO hdfs = new HdfsDAO(Recommend.HDFS, conf);
         hdfs.rmr(output);
 
         conf.setOutputKeyClass(IntWritable.class);
@@ -73,7 +73,7 @@ public class Step3 {
 
         @Override
         public void map(LongWritable key, Text values, OutputCollector<Text, IntWritable> output, Reporter reporter) throws IOException {
-            String[] tokens = Recommand.DELIMITER.split(values.toString());
+            String[] tokens = Recommend.DELIMITER.split(values.toString());
             k.set(tokens[0]);
             v.set(Integer.parseInt(tokens[1]));
             output.collect(k, v);
@@ -81,12 +81,12 @@ public class Step3 {
     }
 
     public static void run2(Map<String, String> path) throws IOException {
-        JobConf conf = Recommand.config();
+        JobConf conf = Recommend.config();
 
         String input = path.get("Step3Input2");
         String output = path.get("Step3Output2");
 
-        HdfsDAO hdfs = new HdfsDAO(Recommand.HDFS, conf);
+        HdfsDAO hdfs = new HdfsDAO(Recommend.HDFS, conf);
         hdfs.rmr(output);
 
         conf.setOutputKeyClass(Text.class);

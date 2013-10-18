@@ -1,4 +1,4 @@
-package org.conan.myhadoop.recommand;
+package org.conan.myhadoop.recommend;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 import org.apache.hadoop.mapred.JobConf;
 
-public class Recommand {
+public class Recommend {
 
     public static final String HDFS = "hdfs://192.168.1.210:9000";
     public static final Pattern DELIMITER = Pattern.compile("[\t,]");
@@ -14,7 +14,7 @@ public class Recommand {
     public static void main(String[] args) throws Exception {
         Map<String, String> path = new HashMap<String, String>();
         path.put("data", "logfile/small.csv");
-        path.put("Step1Input", HDFS + "/user/hdfs/recommand");
+        path.put("Step1Input", HDFS + "/user/hdfs/recommend");
         path.put("Step1Output", path.get("Step1Input") + "/step1");
         path.put("Step2Input", path.get("Step1Output"));
         path.put("Step2Output", path.get("Step1Input") + "/step2");
@@ -35,7 +35,7 @@ public class Recommand {
     }
 
     public static JobConf config() {
-        JobConf conf = new JobConf(Recommand.class);
+        JobConf conf = new JobConf(Recommend.class);
         conf.setJobName("Recommand");
         conf.addResource("classpath:/hadoop/core-site.xml");
         conf.addResource("classpath:/hadoop/hdfs-site.xml");
