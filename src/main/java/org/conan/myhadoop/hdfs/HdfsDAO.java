@@ -1,6 +1,5 @@
 package org.conan.myhadoop.hdfs;
 
-
 import java.io.IOException;
 import java.net.URI;
 
@@ -32,11 +31,12 @@ public class HdfsDAO {
     public static void main(String[] args) throws IOException {
         JobConf conf = config();
         HdfsDAO hdfs = new HdfsDAO(conf);
-        hdfs.copyFile("datafile/item.csv", "/tmp/new");
-        hdfs.ls("/tmp/new");
-    }        
-    
-    public static JobConf config(){
+//        hdfs.copyFile("datafile/item.csv", "/tmp/new");
+//        hdfs.ls("/tmp/new");
+        hdfs.rename("/user/hdfs/pagerank/tmp3", "/user/hdfs/pagerank/tmp4");
+    }
+
+    public static JobConf config() {
         JobConf conf = new JobConf(HdfsDAO.class);
         conf.setJobName("HdfsDAO");
         conf.addResource("classpath:/hadoop/core-site.xml");
@@ -44,7 +44,7 @@ public class HdfsDAO {
         conf.addResource("classpath:/hadoop/mapred-site.xml");
         return conf;
     }
-    
+
     public void mkdirs(String folder) throws IOException {
         Path path = new Path(folder);
         FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
@@ -60,6 +60,15 @@ public class HdfsDAO {
         FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
         fs.deleteOnExit(path);
         System.out.println("Delete: " + folder);
+        fs.close();
+    }
+
+    public void rename(String src, String dst) throws IOException {
+        Path name1 = new Path(src);
+        Path name2 = new Path(dst);
+        FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+        fs.rename(name1, name2);
+        System.out.println("Rename: from " + src + " to " + dst);
         fs.close();
     }
 
@@ -105,19 +114,19 @@ public class HdfsDAO {
         System.out.println("download: from" + remote + " to " + local);
         fs.close();
     }
-    
+
     public void cat(String remoteFile) throws IOException {
         Path path = new Path(remoteFile);
         FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
         FSDataInputStream fsdis = null;
         System.out.println("cat: " + remoteFile);
-        try {  
-            fsdis =fs.open(path);
-            IOUtils.copyBytes(fsdis, System.out, 4096, false);  
-          } finally {  
+        try {
+            fsdis = fs.open(path);
+            IOUtils.copyBytes(fsdis, System.out, 4096, false);
+        } finally {
             IOUtils.closeStream(fsdis);
             fs.close();
-          }
+        }
     }
 
     public void location() throws IOException {
