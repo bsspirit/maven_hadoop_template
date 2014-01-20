@@ -19,8 +19,8 @@ import org.conan.myhadoop.hdfs.HdfsDAO;
 
 public class AdjacencyMatrix {
 
-    private static int nums = 4;// 页面数
-    private static float d = 0.85f;// 阻尼系数
+    private static int nums;// 页面数
+    private static float d;// 阻尼系数
 
     public static class AdjacencyMatrixMapper extends Mapper<LongWritable, Text, Text, Text> {
 
@@ -54,7 +54,7 @@ public class AdjacencyMatrix {
             }
 
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < A.length; i++) {
+            for (int i = 0; i < G.length; i++) {
                 sb.append("," + (float) (G[i] + d * A[i] / sum));
             }
 
@@ -72,6 +72,8 @@ public class AdjacencyMatrix {
         String output = path.get("tmp1");
         String page = path.get("page");
         String pr = path.get("pr");
+        nums = Integer.parseInt(path.get("nums"));// 页面数
+        d = Float.parseFloat(path.get("d"));// 页面数
 
         HdfsDAO hdfs = new HdfsDAO(PageRankJob.HDFS, conf);
         hdfs.rmr(input);

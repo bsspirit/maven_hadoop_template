@@ -20,11 +20,12 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.conan.myhadoop.hdfs.HdfsDAO;
 
 public class PageRank {
+    
+    private static int nums ;// 页面数
 
     public static class PageRankMapper extends Mapper<LongWritable, Text, Text, Text> {
 
         private String flag;// tmp1 or result
-        private static int nums = 4;// 页面数
 
         @Override
         protected void setup(Context context) throws IOException, InterruptedException {
@@ -38,11 +39,10 @@ public class PageRank {
             String[] tokens = PageRankJob.DELIMITER.split(values.toString());
 
             if (flag.equals("tmp1")) {
-                String row = values.toString().substring(0,1);
-                String[] vals = PageRankJob.DELIMITER.split(values.toString().substring(2));// 矩阵转置
-                for (int i = 0; i < vals.length; i++) {
-                    Text k = new Text(String.valueOf(i + 1));
-                    Text v = new Text(String.valueOf("A:" + (row) + "," + vals[i]));
+                String row = tokens[0];
+                for (int i = 1; i < tokens.length; i++) {
+                    Text k = new Text(String.valueOf(i));
+                    Text v = new Text(String.valueOf("A:" + (row) + "," + tokens[i]));
                     context.write(k, v);
                 }
 
@@ -65,11 +65,12 @@ public class PageRank {
             float pr = 0f;
 
             for (Text line : values) {
-                System.out.println(line);
+                System.out.println(key.toString()+"\t"+line);
                 String vals = line.toString();
 
                 if (vals.startsWith("A:")) {
                     String[] tokenA = PageRankJob.DELIMITER.split(vals.substring(2));
+
                     mapA.put(Integer.parseInt(tokenA[0]), Float.parseFloat(tokenA[1]));
                 }
 
@@ -78,9 +79,9 @@ public class PageRank {
                     mapB.put(Integer.parseInt(tokenB[0]), Float.parseFloat(tokenB[1]));
                 }
             }
-            
+
             Iterator<Integer> iterA = mapA.keySet().iterator();
-            while(iterA.hasNext()){
+            while (iterA.hasNext()) {
                 int idx = iterA.next();
                 float A = mapA.get(idx);
                 float B = mapB.get(idx);
@@ -99,6 +100,7 @@ public class PageRank {
         String input = path.get("tmp1");
         String output = path.get("tmp2");
         String pr = path.get("input_pr");
+        nums = Integer.parseInt(path.get("nums"));//页面数
 
         HdfsDAO hdfs = new HdfsDAO(PageRankJob.HDFS, conf);
         hdfs.rmr(output);
@@ -110,7 +112,7 @@ public class PageRank {
         job.setOutputValueClass(Text.class);
 
         job.setMapperClass(PageRankMapper.class);
-         job.setReducerClass(PageRankReducer.class);
+        job.setReducerClass(PageRankReducer.class);
 
         job.setInputFormatClass(TextInputFormat.class);
         job.setOutputFormatClass(TextOutputFormat.class);
