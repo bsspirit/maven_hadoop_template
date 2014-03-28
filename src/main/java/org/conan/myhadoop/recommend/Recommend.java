@@ -35,13 +35,12 @@ public class Recommend {
         path.put("Step6Input", path.get("Step5Output"));
         path.put("Step6Output", path.get("Step1Input") + "/step6");
         
-        
 
         Step1.run(path);
         Step2.run(path);
         Step3.run1(path);
         Step3.run2(path);
-        Step4.run(path);
+//        Step4.run(path);
         
         Step4_Update.run(path);
         Step4_Update2.run(path);
