@@ -68,8 +68,8 @@ public class Step2 {
         conf.setOutputValueClass(IntWritable.class);
 
         conf.setMapperClass(Step2_UserVectorToCooccurrenceMapper.class);
-//        conf.setCombinerClass(Step2_UserVectorToConoccurrenceReducer.class);
-//        conf.setReducerClass(Step2_UserVectorToConoccurrenceReducer.class);
+        conf.setCombinerClass(Step2_UserVectorToConoccurrenceReducer.class);
+        conf.setReducerClass(Step2_UserVectorToConoccurrenceReducer.class);
 
         conf.setInputFormat(TextInputFormat.class);
         conf.setOutputFormat(TextOutputFormat.class);

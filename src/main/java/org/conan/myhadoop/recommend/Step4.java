@@ -36,7 +36,7 @@ public class Step4 {
         @Override
         public void map(LongWritable key, Text values, OutputCollector<IntWritable, Text> output, Reporter reporter) throws IOException {
             String[] tokens = Recommend.DELIMITER.split(values.toString());
-
+            
             String[] v1 = tokens[0].split(":");
             String[] v2 = tokens[1].split(":");
 
@@ -114,7 +114,7 @@ public class Step4 {
 
         FileInputFormat.setInputPaths(conf, new Path(input1), new Path(input2));
         FileOutputFormat.setOutputPath(conf, new Path(output));
-
+        
         RunningJob job = JobClient.runJob(conf);
         while (!job.isComplete()) {
             job.waitForCompletion();
