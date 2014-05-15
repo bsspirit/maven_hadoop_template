@@ -1,6 +1,8 @@
 package org.conan.myhadoop.hdfs;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URI;
 
 import org.apache.hadoop.conf.Configuration;
@@ -115,19 +117,27 @@ public class HdfsDAO {
         fs.close();
     }
 
-    public void cat(String remoteFile) throws IOException {
+    public String cat(String remoteFile) throws IOException {
         Path path = new Path(remoteFile);
         FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
         FSDataInputStream fsdis = null;
         System.out.println("cat: " + remoteFile);
+        
+        OutputStream baos = new ByteArrayOutputStream(); 
+        String str = null;
+        
         try {
             fsdis = fs.open(path);
-            IOUtils.copyBytes(fsdis, System.out, 4096, false);
+            IOUtils.copyBytes(fsdis, baos, 4096, false);
+            str = baos.toString();  
         } finally {
             IOUtils.closeStream(fsdis);
             fs.close();
         }
+        System.out.println(str);
+        return str;
     }
+    
 
     public void location() throws IOException {
         // String folder = hdfsPath + "create/";
